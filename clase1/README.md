@@ -1,82 +1,111 @@
-"# Clase 1 - Tarea Docker" 
-#  Clase 1 – Introducción a Containers y Docker
 
-##  Objetivo de la clase
-Comprender los **fundamentos de Docker**, ejecutar los **primeros contenedores**, explorar las **imágenes oficiales** y practicar comandos esenciales.  
-Además, desplegar una aplicación simple (**Apache HTTP Server**) para familiarizarse con el ciclo de vida de un contenedor.
+# Clase 1 - Introducción a Containers y Docker
 
----
+El objetivo principal de esta primera práctica es comprender los fundamentos de Docker, ejecutar los primeros contenedores, explorar imágenes oficiales desde Docker Hub y aprender los comandos básicos para gestionarlos. Además, se debe desplegar un contenedor con Apache HTTP Server para observar cómo funciona un servicio dentro de un contenedor y familiarizarse con su ciclo de vida.
 
-##  Contexto teórico
-### ¿Qué es un contenedor?
-Un contenedor es un **proceso aislado** que ejecuta una aplicación con todas sus dependencias, compartiendo el kernel del sistema operativo.  
-A diferencia de una máquina virtual, **no requiere un sistema operativo completo**, por lo que es más liviano, rápido y eficiente.
+Un contenedor es un proceso aislado que incluye todo lo necesario para ejecutar una aplicación: código, dependencias, librerías y configuraciones. A diferencia de una máquina virtual, un contenedor no necesita un sistema operativo completo, ya que comparte el kernel con el host, lo que lo hace más ligero y rápido.
 
-###  Componentes principales de Docker
-| Componente | Descripción |
-|-------------|-------------|
-| **Docker Engine** | Servicio que ejecuta y administra contenedores. |
-| **Imagen (Image)** | Plantilla inmutable (*read-only*) que define qué ejecutará el contenedor. |
-| **Contenedor (Container)** | Instancia en ejecución de una imagen. |
-| **Docker Hub** | Repositorio público de imágenes oficiales. |
+Docker se compone de los siguientes elementos:
+- Docker Engine: servicio que administra y ejecuta los contenedores.
+- Imágenes (Images): plantillas inmutables que definen una aplicación.
+- Contenedores (Containers): instancias activas de una imagen.
+- Docker Hub: repositorio público de imágenes oficiales.
 
 ---
 
 ## Parte práctica – Despliegue de Apache HTTP Server
 
-###  Aplicación elegida
-**httpd (Apache HTTP Server)**
+### Aplicación elegida
+httpd (Apache HTTP Server)
 
----
-
-###  Comandos ejecutados
-
-####  1. Crear y ejecutar el contenedor
+### 1. Crear y ejecutar el contenedor
 ```bash
 docker run -d --name tarea1 -p 8081:80 httpd:2.4
+````
 
-#### 2. Verificar su funcionamiento
+Explicación rápida:
+
+* `-d`: ejecuta en segundo plano (detached)
+* `--name tarea1`: nombre del contenedor
+* `-p 8081:80`: mapea puerto local 8081 → puerto 80 del contenedor
+* `httpd:2.4`: imagen oficial de Apache 2.4
+
+### 2. Verificar su funcionamiento
+
 Para confirmar que el contenedor funciona correctamente se ejecutaron los siguientes comandos:
 
 ```bash
 docker ps
 docker logs tarea1
 curl http://localhost:8081/
+```
 
-#### 3. Detener y eliminar el contenedor
-Una vez verificado el funcionamiento del contenedor, se procede a detenerlo y eliminarlo para completar el ciclo de vida del contenedor y mantener limpio el entorno.
+Resultados esperados:
 
-Los comandos utilizados fueron:
+* `docker ps` muestra el contenedor **tarea1** en ejecución con el puerto 8081 publicado.
+* `docker logs tarea1` muestra los registros de inicio de Apache (incluyendo solicitudes GET).
+* Al abrir **[http://localhost:8081/](http://localhost:8081/)** en el navegador (o con `curl`) se visualiza la página por defecto de Apache con el mensaje **"It works!"**.
+
+### 3. Detener y eliminar el contenedor
+
+Una vez verificado el servicio, se procede a detener y eliminar el contenedor para dejar el entorno limpio:
 
 ```bash
 docker stop tarea1
 docker rm tarea1
 docker ps
+```
 
 Explicación:
 
-docker stop tarea1: detiene el contenedor que está en ejecución.
+* `docker stop tarea1`: detiene el contenedor en ejecución.
+* `docker rm tarea1`: elimina el contenedor detenido.
+* `docker ps`: confirma que ya no hay contenedores activos.
 
-docker rm tarea1: elimina el contenedor detenido del sistema.
+---
 
-docker ps: permite confirmar que el contenedor ya no aparece en la lista de contenedores activos.
+## Comandos adicionales útiles
 
-Este proceso garantiza que no queden contenedores en ejecución ni recursos ocupados innecesariamente.
+```bash
+docker images             # listar imágenes
+docker ps -a              # listar contenedores, incluidos detenidos
+docker inspect tarea1     # detalles del contenedor (si está presente)
+docker history httpd:2.4  # historial de capas de la imagen
+docker stats              # uso de CPU/RAM/red en tiempo real
+docker image prune -a     # eliminar imágenes no utilizadas
+docker logs -f tarea1     # logs en tiempo real (si está en ejecución)
+```
 
-Conclusiones
+---
 
-Se comprendió el funcionamiento general de Docker y su arquitectura basada en imágenes y contenedores.
+## Evidencias
 
-Se ejecutó con éxito un contenedor de Apache HTTP Server utilizando la imagen oficial httpd:2.4 desde Docker Hub.
+Guardar capturas en `clase1/screenshots/`:
 
-Se verificó que el servicio Apache respondió correctamente mostrando la página “It works!”, confirmando que el contenedor estaba operativo.
+* `docker-ps.png` → contenedor en ejecución
+* `navegador-8081.png` → “It works!” en el navegador
+* `limpieza.png` → `stop`, `rm` y `docker ps` sin el contenedor
 
-Se aplicaron correctamente los comandos básicos para crear, ejecutar, inspeccionar, detener y eliminar contenedores.
+Estructura sugerida:
 
-Se evidenció la facilidad y rapidez con la que Docker permite desplegar servicios aislados sin depender de configuraciones complejas.
+```
+clase1/
+├── README.md
+└── screenshots/
+    ├── docker-ps.png
+    ├── navegador-8081.png
+    └── limpieza.png
+```
 
-Se reforzó la comprensión del mapeo de puertos, nombres de contenedor y visualización de logs como herramientas esenciales de control.
+---
 
-Se finalizó la tarea con el entorno limpio, comprendiendo el ciclo completo del contenedor (creación, ejecución, verificación, eliminación).
+## Conclusiones
 
-El entorno quedó correctamente configurado en Ubuntu WSL2 + Docker Desktop, listo para continuar con la siguiente clase del curso Docker & Kubernetes.
+1. Se ejecutó con éxito un contenedor de Apache HTTP Server desde la imagen oficial `httpd:2.4`.
+2. Se verificó el servicio accediendo a `http://localhost:8081/` y revisando los logs del contenedor.
+3. Se practicó el ciclo de vida completo del contenedor: crear, verificar, detener y eliminar.
+4. Se reforzó el uso de mapeo de puertos, nombres de contenedor y lectura de logs como herramientas de control.
+5. El entorno quedó limpio y listo para continuar con las siguientes tareas del curso.
+
+```
+

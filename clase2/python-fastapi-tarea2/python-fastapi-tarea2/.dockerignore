@@ -1,0 +1,33 @@
+
+# Carpeta git y VCS
+.git
+.gitignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pytest_cache/
+.venv
+env/
+venv/
+.build/
+dist/
+.buildozer/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Entornos/secretos
+.env
+*.env
+
+# Docker
+docker-compose.yml
+*.log
