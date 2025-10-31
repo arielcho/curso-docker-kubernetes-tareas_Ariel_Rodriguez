@@ -133,7 +133,7 @@ docker history fastapi-tarea2:1.0
 
 ---
 
-## 7️ Conclusiones
+## Conclusiones
 
 * Logré **dockerizar una aplicación FastAPI** aplicando multi-stage builds correctamente.
 * Separar etapas de *build* y *runtime* redujo el tamaño y aumentó la seguridad.
