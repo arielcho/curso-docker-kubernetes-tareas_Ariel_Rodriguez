@@ -75,28 +75,6 @@ docker stats              # uso de CPU/RAM/red en tiempo real
 docker image prune -a     # eliminar imágenes no utilizadas
 docker logs -f tarea1     # logs en tiempo real (si está en ejecución)
 ```
-
----
-
-## Evidencias
-
-Guardar capturas en `clase1/screenshots/`:
-
-* `docker-ps.png` → contenedor en ejecución
-* `navegador-8081.png` → “It works!” en el navegador
-* `limpieza.png` → `stop`, `rm` y `docker ps` sin el contenedor
-
-Estructura sugerida:
-
-```
-clase1/
-├── README.md
-└── screenshots/
-    ├── docker-ps.png
-    ├── navegador-8081.png
-    └── limpieza.png
-```
-
 ---
 
 ## Conclusiones
